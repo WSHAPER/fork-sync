@@ -20,7 +20,7 @@ jobs:
           git config --global credential.helper store
 
           # Save the PAT in the git-credentials file
-          echo "https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com" > ~/.git-credentials
+          echo "https://${PERSONAL_ACCESS_TOKEN}@github.com" > ~/.git-credentials
 
           # Clone the repository using the --mirror flag
           git clone --mirror https://github.com/pkarastelev/office-app.git temp
@@ -28,5 +28,9 @@ jobs:
           # Go into the cloned directory
           cd temp
 
-          # Push the mirror to the destination repository
-          git push --mirror https://github.com/WSHAPER/office-app.git
+          # Filter out pull request refs from the mirrored refs
+          git for-each-ref --format='%(refname)' refs/heads/ refs/tags/ | xargs -L1 git push https://github.com/WSHAPER/office-app.git
+
+          # Clean up
+          cd ..
+          rm -rf temp
