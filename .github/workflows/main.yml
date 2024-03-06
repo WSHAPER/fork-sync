@@ -13,14 +13,14 @@ jobs:
     steps:
       - name: Mirror the upstream repository to this repository
         env:
-          # Use the GITHUB_TOKEN for authentication
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Reference the PAT from your repository secrets
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          # Set up git to use the GITHUB_TOKEN for authentication
+          # Set up git to use the PAT for authentication
           git config --global credential.helper store
 
-          # Save the GITHUB_TOKEN in the git-credentials file
-          echo "https://x-access-token:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+          # Save the PAT in the git-credentials file
+          echo "https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com" > ~/.git-credentials
 
           # Clone the repository using the --mirror flag
           git clone --mirror https://github.com/pkarastelev/office-app.git temp
@@ -29,5 +29,4 @@ jobs:
           cd temp
 
           # Push the mirror to the destination repository
-          # Make sure to replace this URL with your repository's URL
           git push --mirror https://github.com/WSHAPER/office-app.git
