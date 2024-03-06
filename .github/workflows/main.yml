@@ -2,7 +2,7 @@ name: Mirror Upstream Repository
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *' # Runs every hour as an example
   workflow_dispatch:
 
 jobs:
@@ -12,9 +12,22 @@ jobs:
 
     steps:
       - name: Mirror the upstream repository to this repository
-        run: |
-          git clone --mirror https://github.com/pkarastelev/office-app.git temp
-          cd temp
-          git push --mirror https://github.com/WSHAPER/office-app.git
         env:
+          # Use the GITHUB_TOKEN for authentication
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Set up git to use the GITHUB_TOKEN for authentication
+          git config --global credential.helper store
+
+          # Save the GITHUB_TOKEN in the git-credentials file
+          echo "https://x-access-token:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+
+          # Clone the repository using the --mirror flag
+          git clone --mirror https://github.com/pkarastelev/office-app.git temp
+
+          # Go into the cloned directory
+          cd temp
+
+          # Push the mirror to the destination repository
+          # Make sure to replace this URL with your repository's URL
+          git push --mirror https://github.com/WSHAPER/office-app.git
