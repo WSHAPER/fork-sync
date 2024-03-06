@@ -24,8 +24,17 @@ jobs:
           # Set the push URL to the destination repository, including the PAT for authentication
           git remote set-url --push origin https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/WSHAPER/office-app.git
 
-          # Push the mirror to the destination repository
-          git push --mirror
+          # Fetch all refs from origin
+          git fetch origin
+
+          # Optionally, list all refs you want to exclude
+          # For example, to exclude pull request refs, you can list them explicitly or use patterns to exclude them
+          # This step is manual and requires specifying what you want to exclude or include
+
+          # Push everything except the excluded refs
+          # Here, we're using a workaround by explicitly pushing branches and tags, excluding refs such as pull requests
+          git push origin 'refs/tags/*:refs/tags/*'
+          git push origin 'refs/heads/*:refs/heads/*'
 
           # Clean up
           cd ..
