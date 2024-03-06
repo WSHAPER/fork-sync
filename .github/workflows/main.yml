@@ -13,23 +13,22 @@ jobs:
     steps:
       - name: Mirror the upstream repository to this repository
         env:
-          # Reference the PAT from your repository secrets
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          # Set up git to use the PAT for authentication
-          git config --global credential.helper store
-
-          # Save the PAT in the git-credentials file
-          echo "https://${PERSONAL_ACCESS_TOKEN}@github.com" > ~/.git-credentials
-
+          # Set up git to avoid prompting for user input
+          git config --global --add safe.directory '*'
+          
           # Clone the repository using the --mirror flag
           git clone --mirror https://github.com/pkarastelev/office-app.git temp
 
-          # Go into the cloned directory
+          # Navigate into the repository directory
           cd temp
 
-          # Filter out pull request refs from the mirrored refs
-          git for-each-ref --format='%(refname)' refs/heads/ refs/tags/ | xargs -L1 git push https://github.com/WSHAPER/office-app.git
+          # Configure git to use the PAT for authentication
+          git remote set-url origin https://${PERSONAL_ACCESS_TOKEN}@github.com/WSHAPER/office-app.git
+
+          # Push the mirror to the destination repository, excluding pull request refs
+          git for-each-ref --format='%(refname)' refs/heads/ refs/tags/ | xargs -L1 git push --mirror
 
           # Clean up
           cd ..
