@@ -1,0 +1,40 @@
+name: Mirror Upstream Repository without PR refs
+
+on:
+  schedule:
+    - cron: '45/60 * * * *'  # Runs a cron job every 5 minutes past 09:35
+
+jobs:
+  mirror_repo:
+    runs-on: ubuntu-latest
+    name: Mirror the upstream repository
+
+    steps:
+      - name: Mirror the upstream repository to this repository
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          # Initialize a temporary directory for the mirror operation
+          mkdir temp && cd temp
+          
+          # Initialize an empty Git repository
+          git init
+
+          # Add the source repo as a remote
+          git remote add upstream https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/pkarastelev/office-app.git
+          
+          # Fetch all branches and tags from the upstream repository
+          git fetch upstream '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
+          
+          # Add the destination repository as a remote, using the PAT for authentication
+          git remote add origin https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/WSHAPER/office-app.git
+          
+          # Push all local branches to the destination repository
+          git push origin --all
+          
+          # Push all tags to the destination repository
+          git push origin --tags
+          
+          # Clean up
+          cd ..
+          rm -rf temp
