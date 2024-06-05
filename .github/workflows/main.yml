@@ -2,7 +2,7 @@ name: Mirror Upstream Repository without PR refs
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour as an example
+    - cron: '* 0 * * *'  # Runs every hour as an example
 
 jobs:
   mirror_repo:
