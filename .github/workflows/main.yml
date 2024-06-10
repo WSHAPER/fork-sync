@@ -3,7 +3,7 @@ name: Mirror Upstream Repository without PR refs
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour as an example
+    - cron: '45 * * * *' # Runs every hour starting from the 45th minute
 
 jobs:
   mirror_repo:
