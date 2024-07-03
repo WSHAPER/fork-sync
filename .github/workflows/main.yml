@@ -1,6 +1,7 @@
 name: Mirror Upstream Repositories
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '45/60 * * * *'  # Runs every hour at 45 minutes past the hour
 
