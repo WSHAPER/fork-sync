@@ -16,9 +16,9 @@ jobs:
         run: |
           mkdir temp1 && cd temp1
           git init
-          git remote add upstream https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/pkarastelev/office-app.git
+          git remote add upstream https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/kestr31/docker-stable-diffusion-webui.git
           git fetch upstream '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
-          git remote add origin https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/WSHAPER/office-app.git
+          git remote add origin https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/WSHAPER/docker-stable-diffusion-webui.git
           git push origin --all
           git push origin --tags
           cd .. && rm -rf temp1
