@@ -14,6 +14,7 @@ jobs:
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
+          # TODO: Add separate file to version control repositories
           mkdir temp1 && cd temp1
           git init
           git remote add upstream https://x-access-token:${PERSONAL_ACCESS_TOKEN}@github.com/kestr31/docker-stable-diffusion-webui.git
